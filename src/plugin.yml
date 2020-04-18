@@ -1,0 +1,11 @@
+main: com.thizthizzydizzy.skilltree.SkillTreeCore
+version: 1.0
+api-version: 1.14
+author: ThizThizzyDizzy
+website: "https://discordapp.com/invite/dhcPSMt"
+name: SkillTree
+load: STARTUP
+commands:
+    skilltree:
+        description: SkillTree commands
+        usage: /skilltree create <name> | modify <name>
