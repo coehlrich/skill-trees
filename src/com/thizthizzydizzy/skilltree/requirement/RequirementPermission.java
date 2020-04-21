@@ -22,4 +22,8 @@ public class RequirementPermission extends Requirement{
     }
     @Override
     public void unlock(Player player, SkillInstance instance){}
+    @Override
+    public String getFriendlyLore(){
+        return null;
+    }
 }

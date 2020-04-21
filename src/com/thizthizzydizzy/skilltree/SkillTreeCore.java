@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
@@ -23,6 +24,11 @@ import simplelibrary.config2.ConfigList;
 public class SkillTreeCore extends JavaPlugin{
     public static SkillTreeCore INSTANCE;
     public String globalPrefix = "skilltree";
+    public String requirementsPrefix = ChatColor.DARK_GREEN+""+ChatColor.BOLD+"Requirements:";
+    public String requirementFormat = " "+ChatColor.DARK_RED+"X"+ChatColor.RESET+" {0}";
+    public String requirementMetFormat = " "+ChatColor.DARK_GREEN+"O"+ChatColor.RESET+" {0}";
+    public String effectsPrefix = ChatColor.DARK_GREEN+""+ChatColor.BOLD+"Effects:";
+    public String effectFormat = " {0}";
     public HashMap<String, ArrayList<SkillTree>> skillTrees = new HashMap<>();
     public ArrayList<Requirement> requirements = new ArrayList<>();
     public ArrayList<Effect> effects = new ArrayList<>();
@@ -55,6 +61,11 @@ public class SkillTreeCore extends JavaPlugin{
         getConfig().options().copyDefaults(true);
         //</editor-fold>
         globalPrefix = getConfig().getString("prefix", globalPrefix);
+        requirementsPrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("requirements-prefix", requirementsPrefix));
+        requirementFormat = ChatColor.translateAlternateColorCodes('&', getConfig().getString("requirement-format", requirementFormat));
+        requirementMetFormat = ChatColor.translateAlternateColorCodes('&', getConfig().getString("requirement-met-format", requirementMetFormat));
+        effectsPrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("effects-prefix", effectsPrefix));
+        effectFormat = ChatColor.translateAlternateColorCodes('&', getConfig().getString("effect-format", effectFormat));
         INSTANCE = this;
         registerRequirements();
         getCommand("skilltree").setExecutor(new CommandSkillTree(this));

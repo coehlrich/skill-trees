@@ -119,4 +119,10 @@ public class SkillTree{
             newEffect.reload(instance.getSkill(skill));
         }
     }
+    public void removeEffect(Skill skill, Effect effect){
+        for(SkillTreeInstance instance : instances){
+            effect.disable(instance.getSkill(skill));
+            effect.reload(instance.getSkill(skill));
+        }
+    }
 }

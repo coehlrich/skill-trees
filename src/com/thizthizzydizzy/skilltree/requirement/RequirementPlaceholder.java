@@ -40,4 +40,8 @@ public class RequirementPlaceholder extends Requirement{
     public Requirement newInstance(){
         return new RequirementPlaceholder(config);
     }
+    @Override
+    public String getFriendlyLore(){
+        return null;
+    }
 }

@@ -3,3 +3,10 @@
 
 # Prefix used for permissions and as the default namespace
 prefix: skilltree
+
+requirements-prefix: "&2&lRequirements:"
+requirement-format: " &4X&r {0}"
+requirement-met-format: " &2O&r {0}"
+
+effects-prefix: "&2&lEffects:"
+effect-format: " {0}"

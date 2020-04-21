@@ -4,7 +4,6 @@ import com.thizthizzydizzy.skilltree.effect.EffectPlaceholder;
 import com.thizthizzydizzy.skilltree.requirement.Requirement;
 import com.thizthizzydizzy.skilltree.requirement.RequirementPlaceholder;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -160,5 +159,9 @@ public class Skill{
         }else{
             tree.reload(this, oldEffect, newEffect);
         }
+    }
+    public void removeEffect(Effect effect){
+        getEffects().remove(effect);
+        tree.removeEffect(this, effect);
     }
 }

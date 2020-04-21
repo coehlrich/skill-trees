@@ -71,6 +71,19 @@ public class SkillInstance{
             }
         }
     }
+    /**
+     * Checks if the skill should be visible.
+     * @param player The player to check against
+     * @return <code>true</code> if the skill should be visible even if hidden
+     */
+    public boolean isVisible(Player player){
+        if(getAvailability()!=Availability.UNLOCKED)return false;
+        for(Requirement r : skill.getRequirements()){
+            if(!r.requiredForVisibility())continue;
+            if(!r.isMet(player, this))return false;
+        }
+        return true;
+    }
     public static enum Availability{
         PURCHASED(Color.GREEN),
         LOCKED(Color.BLACK),
