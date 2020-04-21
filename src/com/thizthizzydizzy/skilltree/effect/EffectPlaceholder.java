@@ -39,4 +39,8 @@ public class EffectPlaceholder extends Effect{
     public ItemBuilder getIcon(){
         return new ItemBuilder(Material.BARRIER);
     }
+    @Override
+    public String getFriendlyLore(){
+        return null;
+    }
 }

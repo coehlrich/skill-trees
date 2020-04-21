@@ -22,6 +22,12 @@ public abstract class Requirement{
     public abstract void unlock(Player player, SkillInstance instance);
     public abstract Requirement newInstance();
     public abstract ItemBuilder getIcon();
+    /**
+     * @return false if skills should be visible even when this requirement is not met
+     */
+    public boolean requiredForVisibility(){
+        return true;
+    }
     @Override
     public String toString(){
         return namespace+":"+name;
@@ -65,4 +71,9 @@ public abstract class Requirement{
         }
         return requirement;
     }
+    /**
+     * Gets the line of lore to display on the skill in SkillTree
+     * @return a single line that describes this requirement in a friendly way, or <code>null</code> if it should not be displayed
+     */
+    public abstract String getFriendlyLore();
 }

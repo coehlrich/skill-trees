@@ -1,7 +1,10 @@
 package com.thizthizzydizzy.skilltree.menu;
 import com.thizthizzydizzy.skilltree.Skill;
 import com.thizthizzydizzy.skilltree.SkillInstance;
+import com.thizthizzydizzy.skilltree.SkillTreeCore;
 import com.thizthizzydizzy.skilltree.SkillTreeInstance;
+import com.thizthizzydizzy.skilltree.effect.Effect;
+import com.thizthizzydizzy.skilltree.requirement.Requirement;
 import com.thizthizzydizzy.util.ItemBuilder;
 import com.thizthizzydizzy.util.ItemProvider;
 import com.thizthizzydizzy.util.Menu;
@@ -25,7 +28,7 @@ public class MenuSkillTreeInstance extends Menu{
     @Override
     public void openInventory(){
         if(instance.tree.root.hidden){
-            if(!instance.getSkill(instance.tree.root).isAvailable(player))return;
+            if(!instance.getSkill(instance.tree.root).isVisible(player))return;
         }
         super.openInventory();
     }
@@ -65,25 +68,46 @@ public class MenuSkillTreeInstance extends Menu{
         inventory.clear();
         connectionNodes.clear();
         for(Skill skill : instance.tree.skills){
+            SkillInstance inst = instance.getSkill(skill);
             if(skill.hidden){
-                SkillInstance inst = instance.getSkill(skill);
-                if(!inst.isAvailable(player)&&!inst.isUnlocked())continue;
+                if(!inst.isVisible(player)&&!inst.isUnlocked())continue;
             }
             int x = skill.x-panX;
             int y = skill.y-panY;
             int id = convertCenteredCoordsToId(x,y);
             if(id==-1)continue;//offscreen
-            inventory.setItem(id, new ItemBuilder(skill.icon).setDisplayName(skill.getName()).addLore(skill.getLore()).build());
+            ItemBuilder builder = new ItemBuilder(skill.icon).setDisplayName(skill.getName()).addLore(skill.getLore());
+            boolean hasRequirements = false;
+            for(Requirement r : skill.getRequirements()){
+                String s = r.getFriendlyLore();
+                if(s==null)continue;
+                if(!hasRequirements){
+                    hasRequirements = true;
+                    builder.addLore(SkillTreeCore.INSTANCE.requirementsPrefix);
+                }
+                builder.addLore((r.isMet(player, inst)?SkillTreeCore.INSTANCE.requirementMetFormat:SkillTreeCore.INSTANCE.requirementFormat).replace("{0}", s));
+            }
+            boolean hasEffects = false;
+            for(Effect e : skill.getEffects()){
+                String s = e.getFriendlyLore();
+                if(s==null)continue;
+                if(!hasEffects){
+                    hasEffects = true;
+                    builder.addLore(SkillTreeCore.INSTANCE.effectsPrefix);
+                }
+                builder.addLore(SkillTreeCore.INSTANCE.effectFormat.replace("{0}", s));
+            }
+            inventory.setItem(id, builder.build());
         }
         for(Skill skill : instance.tree.skills){
             if(skill.hidden){
                 SkillInstance inst = instance.getSkill(skill);
-                if(!inst.isAvailable(player)&&!inst.isUnlocked())continue;
+                if(!inst.isVisible(player)&&!inst.isUnlocked())continue;
             }
             for(Skill pre : skill.prerequisites){
                 if(pre.hidden){
                     SkillInstance inst = instance.getSkill(pre);
-                    if(!inst.isAvailable(player)&&!inst.isUnlocked())continue;
+                    if(!inst.isVisible(player)&&!inst.isUnlocked())continue;
                 }
                 ArrayList<Node> nodes = path(pre, skill);
                 if(nodes==null){

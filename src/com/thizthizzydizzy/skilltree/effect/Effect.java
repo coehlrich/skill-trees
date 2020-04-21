@@ -97,4 +97,9 @@ public abstract class Effect{
         }
         return true;
     }
+    /**
+     * Gets the line of lore to display on the skill in SkillTree
+     * @return a single line that describes this requirement in a friendly way, or <code>null</code> if it should not be displayed
+     */
+    public abstract String getFriendlyLore();
 }

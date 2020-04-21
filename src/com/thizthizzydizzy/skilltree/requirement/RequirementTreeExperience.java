@@ -18,10 +18,18 @@ public class RequirementTreeExperience extends Requirement{
     }
     @Override
     public ItemBuilder getIcon(){
-        return ItemProvider.icon(ItemProvider.Icon.PERMISSION);
+        return ItemProvider.icon(ItemProvider.Icon.TREE_EXPERIENCE);
     }
     @Override
     public void unlock(Player player, SkillInstance instance){
         instance.tree.removeExperience((int)variables[0].getValue());
+    }
+    @Override
+    public boolean requiredForVisibility(){
+        return false;
+    }
+    @Override
+    public String getFriendlyLore(){
+        return "Tree Experience: "+variables[0].getValueS();
     }
 }

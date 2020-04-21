@@ -35,7 +35,7 @@ public class MenuEffect extends Menu{
         }
         add(new Button(size-1, new ItemBuilder(Material.BARRIER).setDisplayName(ChatColor.DARK_RED+""+ChatColor.BOLD+"Delete Effect").addLore(""+ChatColor.ITALIC+ChatColor.GRAY+"Shift-click to confirm deletion").build(), (type) -> {
             if(type==ClickType.SHIFT_LEFT){
-                skill.getEffects().remove(effect);
+                skill.removeEffect(effect);
                 open(parent);
             }
         }));

@@ -45,7 +45,8 @@ public class ItemProvider{
         LOCKED("Locked", 10010),
         MOVE("Move", 10011),
         VISIBLE("Visible", 10012),
-        HIDDEN("Hidden", 10013);
+        HIDDEN("Hidden", 10013),
+        TREE_EXPERIENCE("Tree Experience", 10014);
         private final String name;
         private final int data;
         private final String[] lore;
