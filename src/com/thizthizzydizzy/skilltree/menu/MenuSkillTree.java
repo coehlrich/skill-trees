@@ -1,6 +1,9 @@
 package com.thizthizzydizzy.skilltree.menu;
 import com.thizthizzydizzy.skilltree.Skill;
 import com.thizthizzydizzy.skilltree.SkillTree;
+import com.thizthizzydizzy.skilltree.SkillTreeCore;
+import com.thizthizzydizzy.skilltree.effect.Effect;
+import com.thizthizzydizzy.skilltree.requirement.Requirement;
 import com.thizthizzydizzy.util.ItemBuilder;
 import com.thizthizzydizzy.util.ItemProvider;
 import com.thizthizzydizzy.util.Menu;
@@ -11,6 +14,7 @@ import org.bukkit.Color;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import simplelibrary.Stack;
@@ -69,7 +73,28 @@ public class MenuSkillTree extends Menu{
             int y = skill.y-panY;
             int id = convertCenteredCoordsToId(x,y);
             if(id==-1)continue;//offscreen
-            inventory.setItem(id, new ItemBuilder(skill.icon).setDisplayName(skill.getName()).addLore(skill.getLore()).build());
+            ItemBuilder builder = new ItemBuilder(skill.icon).setDisplayName(skill.getName()).addLore(skill.getLore()).addFlag(ItemFlag.HIDE_ATTRIBUTES);
+            boolean hasRequirements = false;
+            for(Requirement r : skill.getRequirements()){
+                String s = r.getFriendlyLore();
+                if(s==null)continue;
+                if(!hasRequirements){
+                    hasRequirements = true;
+                    builder.addLore(SkillTreeCore.INSTANCE.requirementsPrefix);
+                }
+                builder.addLore(SkillTreeCore.INSTANCE.requirementMetFormat.replace("{0}", s));
+            }
+            boolean hasEffects = false;
+            for(Effect e : skill.getEffects()){
+                String s = e.getFriendlyLore();
+                if(s==null)continue;
+                if(!hasEffects){
+                    hasEffects = true;
+                    builder.addLore(SkillTreeCore.INSTANCE.effectsPrefix);
+                }
+                builder.addLore(SkillTreeCore.INSTANCE.effectFormat.replace("{0}", s));
+            }
+            inventory.setItem(id, builder.build());
         }
         for(Skill skill : tree.skills){
             for(Skill pre : skill.prerequisites){

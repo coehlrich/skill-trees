@@ -13,6 +13,7 @@ import java.util.HashSet;
 import org.bukkit.Color;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import simplelibrary.Stack;
@@ -76,7 +77,7 @@ public class MenuSkillTreeInstance extends Menu{
             int y = skill.y-panY;
             int id = convertCenteredCoordsToId(x,y);
             if(id==-1)continue;//offscreen
-            ItemBuilder builder = new ItemBuilder(skill.icon).setDisplayName(skill.getName()).addLore(skill.getLore());
+            ItemBuilder builder = new ItemBuilder(skill.icon).setDisplayName(skill.getName()).addLore(skill.getLore()).addFlag(ItemFlag.HIDE_ATTRIBUTES);
             boolean hasRequirements = false;
             for(Requirement r : skill.getRequirements()){
                 String s = r.getFriendlyLore();

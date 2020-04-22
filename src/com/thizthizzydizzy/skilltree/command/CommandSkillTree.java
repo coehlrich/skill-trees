@@ -144,6 +144,69 @@ public class CommandSkillTree implements TabExecutor{
                 return "modify <name>";
             }
         });
+        commands.add(new SkillTreeCommand("copy"){
+            @Override
+            protected boolean run(CommandSender sender, Command command, String label, String[] args){
+                if(!(sender instanceof Player)){
+                    sender.sendMessage("You are not a player!");
+                    return true;
+                }
+                if(args.length!=3){
+                    sender.sendMessage("Usage: /skilltree copy <from> <to>\n<from> and <to> Should be namespaced IDs comprised of lowercase alphanumeric characters and underscores\nIf no namespace is provided, a default namespace of "+SkillTreeCore.INSTANCE.globalPrefix+" will be used");
+                    return true;
+                }
+                String from = args[1];
+                for(char c : from.toCharArray()){
+                    if(c=='_'||c==':')continue;
+                    if(Character.isDigit(c))continue;
+                    if(Character.isLetter(c)&&Character.isLowerCase(c))continue;
+                    sender.sendMessage("Invalid name!\nProvide a namespaced identifier comprised of lowercase alphanumeric characters and underscores\nIf no namespace is provided, a default namespace of "+SkillTreeCore.INSTANCE.globalPrefix+" will be used");
+                    return true;
+                }
+                String[] fromStrs = from.split(":");
+                if(fromStrs.length>2){
+                    sender.sendMessage("Invalid name!\nProvide a namespaced identifier comprised of lowercase alphanumeric characters and underscores\nIf no namespace is provided, a default namespace of "+SkillTreeCore.INSTANCE.globalPrefix+" will be used");
+                    return true;
+                }
+                if(fromStrs.length==1)fromStrs = new String[]{SkillTreeCore.INSTANCE.globalPrefix,fromStrs[0]};
+                if(!plugin.hasSkillTree(fromStrs[0],fromStrs[1])){
+                    sender.sendMessage("Skill tree "+fromStrs[0]+":"+fromStrs[1]+" does not exist!");
+                    return true;
+                }
+                String to = args[2];
+                for(char c : to.toCharArray()){
+                    if(c=='_'||c==':')continue;
+                    if(Character.isDigit(c))continue;
+                    if(Character.isLetter(c)&&Character.isLowerCase(c))continue;
+                    sender.sendMessage("Invalid name!\nProvide a namespaced identifier comprised of lowercase alphanumeric characters and underscores\nIf no namespace is provided, a default namespace of "+SkillTreeCore.INSTANCE.globalPrefix+" will be used");
+                    return true;
+                }
+                String[] toStrs = to.split(":");
+                if(toStrs.length>2){
+                    sender.sendMessage("Invalid name!\nProvide a namespaced identifier comprised of lowercase alphanumeric characters and underscores\nIf no namespace is provided, a default namespace of "+SkillTreeCore.INSTANCE.globalPrefix+" will be used");
+                    return true;
+                }
+                if(toStrs.length==1)toStrs = new String[]{SkillTreeCore.INSTANCE.globalPrefix,toStrs[0]};
+                if(plugin.hasSkillTree(toStrs[0],toStrs[1])){
+                    sender.sendMessage("Skill tree "+toStrs[0]+":"+toStrs[1]+" already exists!");
+                    return true;
+                }
+                plugin.copySkillTree(fromStrs[0],fromStrs[1],toStrs[0],toStrs[1]);
+                sender.sendMessage("Copied "+fromStrs[0]+":"+fromStrs[1]+" to "+toStrs[0]+":"+toStrs[1]);
+                return true;
+            }
+            @Override
+            public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args){
+                ArrayList<String> skillTrees = new ArrayList<>();
+                if(args.length>1)return skillTrees;//too much!
+                for(SkillTree tree : plugin.getSkillTrees())skillTrees.add(tree.namespace+":"+tree.name);
+                return autoTabComplete(sender, command, label, args, skillTrees);
+            }
+            @Override
+            protected String getUsage(){
+                return "modify <name>";
+            }
+        });
     }
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){

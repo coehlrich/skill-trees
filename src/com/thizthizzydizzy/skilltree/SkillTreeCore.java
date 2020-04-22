@@ -272,4 +272,11 @@ public class SkillTreeCore extends JavaPlugin{
             }
         }
     }
+    public void copySkillTree(String fromNamespace, String fromName, String toNamespace, String toName){
+        SkillTree from = getSkillTree(fromNamespace, fromName);
+        Config cfg = from.save(Config.newConfig());
+        cfg.set("namespace", toNamespace);
+        cfg.set("name", toName);
+        addSkillTree(toNamespace, SkillTree.load(cfg));
+    }
 }
