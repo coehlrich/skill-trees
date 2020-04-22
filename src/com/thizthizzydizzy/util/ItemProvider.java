@@ -1,6 +1,7 @@
 package com.thizthizzydizzy.util;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
 public class ItemProvider{
     public static ItemBuilder icon(Icon icon){
         return new ItemBuilder(Material.CLOCK)
@@ -30,7 +31,8 @@ public class ItemProvider{
         return new ItemBuilder(Material.LEATHER_HELMET)
                 .setDisplayName(" ")
                 .setCustomModelData(10001+i)
-                .dye(color);
+                .dye(color)
+                .addFlag(ItemFlag.HIDE_ATTRIBUTES);
     }
     public static enum Icon{
         CONNECT("Connect skills", 10001),
