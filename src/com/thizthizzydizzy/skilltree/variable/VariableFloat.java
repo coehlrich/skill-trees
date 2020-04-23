@@ -3,8 +3,18 @@ import com.thizthizzydizzy.util.ItemBuilder;
 import com.thizthizzydizzy.util.Menu;
 import org.bukkit.Material;
 public class VariableFloat extends Variable<Float>{
+    private final float min;
+    private final float max;
     public VariableFloat(String name, float defaultValue){
+        this(name, defaultValue, Float.MIN_VALUE);
+    }
+    public VariableFloat(String name, float defaultValue, float min){
+        this(name, defaultValue, min, Float.MAX_VALUE);
+    }
+    public VariableFloat(String name, float defaultValue, float min, float max){
         super(name, defaultValue);
+        this.min = min;
+        this.max = max;
     }
     public ItemBuilder getIcon(){
         return new ItemBuilder(Material.PAPER);
@@ -16,7 +26,9 @@ public class VariableFloat extends Variable<Float>{
             string = string.trim();
             try{
                 i = Float.parseFloat(string);
+                if(!Float.isFinite(i))i = min;
             }catch(NumberFormatException ex){}
+            i = Math.min(max,Math.max(min, getValue()));
             setValue(i);
         });
     }
