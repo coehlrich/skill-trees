@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -32,6 +33,7 @@ public class ItemBuilder{
     protected ArrayList<String> lore = new ArrayList<>();
     protected Color color = null;
     protected Integer customModelData = null;
+    protected ArrayList<ItemFlag> flags = new ArrayList<>();
     public ItemBuilder(Material type){
         this.type = type;
     }
@@ -62,6 +64,10 @@ public class ItemBuilder{
         this.customModelData = data;
         return this;
     }
+    public ItemBuilder addFlag(ItemFlag flag){
+        flags.add(flag);
+        return this;
+    }
     public ItemStack build(){
         ItemStack stack = new ItemStack(type);
         ItemMeta meta = stack.getItemMeta();
@@ -72,6 +78,9 @@ public class ItemBuilder{
         }
         if(color!=null&&meta instanceof LeatherArmorMeta){
             ((LeatherArmorMeta) meta).setColor(color);
+        }
+        for(ItemFlag flag : flags){
+            meta.addItemFlags(flag);
         }
         stack.setItemMeta(meta);
         return stack;
