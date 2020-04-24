@@ -28,7 +28,7 @@ public class VariableFloat extends Variable<Float>{
                 i = Float.parseFloat(string);
                 if(!Float.isFinite(i))i = min;
             }catch(NumberFormatException ex){}
-            i = Math.min(max,Math.max(min, getValue()));
+            i = Math.min(max,Math.max(min, i));
             setValue(i);
         });
     }
