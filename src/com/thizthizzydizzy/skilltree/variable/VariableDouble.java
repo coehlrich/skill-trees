@@ -28,7 +28,7 @@ public class VariableDouble extends Variable<Double>{
                 i = Double.parseDouble(string);
                 if(!Double.isFinite(i))i = min;
             }catch(NumberFormatException ex){}
-            i = Math.min(max,Math.max(min, getValue()));
+            i = Math.min(max,Math.max(min, i));
             setValue(i);
         });
     }
